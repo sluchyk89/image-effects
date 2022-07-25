@@ -1,4 +1,4 @@
-use base64::decode;
+use base64::{decode, encode};
 use image::ImageOutputFormat::Png;
 use image::load_from_memory;
 use web_sys::console::log_1 as log;
@@ -6,7 +6,7 @@ use web_sys::console::log_1 as log;
 use wasm_bingen::prelude::*;
 
 #[wasm_bingen]
-pub fn grayscale(encoded_file: &str) {
+pub fn grayscale(encoded_file: &str) -> String {
     log(&"Grayscale scalled".into());
 
     let base64_to_vector = decode(encoded_file).unwrap();
@@ -26,4 +26,12 @@ pub fn grayscale(encoded_file: &str) {
     img.write_to(&mut buffer, Png).unwrap();
 
     log(&"New image written".into());
+
+    let encoded_img = encode(&buffer);
+
+    let data_url = format!(
+        "data:image/png;base64,{}", encoded_img
+    );
+
+    data_url
 }
