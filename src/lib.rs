@@ -1,6 +1,6 @@
 use base64::decode;
-use web_sys::console::log_1 as log;
 use image::load_from_memory;
+use web_sys::console::log_1 as log;
 
 use wasm_bingen::prelude::*;
 
@@ -12,8 +12,11 @@ pub fn grayscale(encoded_file: &str) {
 
     log(&"Image decoded".into());
 
-    let img = load_from_memory(&base64_to_vector).unwrap();
+    let mut img = load_from_memory(&base64_to_vector).unwrap();
 
-    log(&"Image loaded".into())
-    
+    log(&"Image loaded".into());
+
+    img = img.grayscale();
+
+    log(&"Grayscale effect applied".into());
 }
